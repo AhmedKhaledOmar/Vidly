@@ -9,24 +9,31 @@
 }
 else
 {
-    <table class="table table-hover">
+    <table class="table  table-bordered " style="width: 100%;">
         <thead>
             <tr>
-                <th>
+                <th scope="col">
                     Customer
+                </th>
+                <th scope="col">
+                    Discount Rate
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach (var customer in Model)
-                {
-                    <td>
-                        @Html.ActionLink(customer.Name, "Details", new { customer.Id })
-                    </td>
-                }
+            @foreach (var customer in Model)
+            {
+            <tr class="table-active">
+                <td>
+                    @Html.ActionLink(customer.Name, "Details", new { customer.Id })
+                </td>
+                <td>
+                    @customer.MembershipType.DiscountRate%
+                </td>
             </tr>
-        </tbody>
+            }
+                
+            </tbody>
     </table>
 
 }
