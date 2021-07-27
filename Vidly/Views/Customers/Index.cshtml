@@ -25,7 +25,7 @@ else
             {
             <tr class="table-active">
                 <td>
-                    @Html.ActionLink(customer.Name, "Details", new { customer.Id })
+                    @Html.ActionLink(customer.Name, "ViewEdit", new { customer.Id })
                 </td>
                 <td>
                     @customer.MembershipType.Name
