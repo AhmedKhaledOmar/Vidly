@@ -27,7 +27,7 @@ namespace Vidly.Models
 		{
 			var client = new HttpClient();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			var response = await client.PostAsJsonAsync(Url, Obj);
+			var response = await client.PutAsJsonAsync(Url, Obj);
 			var jsonstring = await response.Content.ReadAsStringAsync();
 			return jsonstring;
 		}

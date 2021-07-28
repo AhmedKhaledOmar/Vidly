@@ -30,11 +30,19 @@ namespace Vidly.Controllers
             };
             return View(viewModel);
         }
-        public async System.Threading.Tasks.Task<ActionResult> CreateAsync(Customer customer)
+        public async System.Threading.Tasks.Task<ActionResult> SaveAsync(Customer customer)
         {
-               var url = "https://localhost:44331/api/customersapi";
-               await API.PostAsync(url , customer);
-               return RedirectToAction("Index", "Customers");
+            if (customer.Id == 0)
+            {
+                var url = "https://localhost:44331/api/customersapi";
+                await API.PostAsync(url, customer);
+            }
+            else
+            {
+                var url = "https://localhost:44331/api/customersapi";
+                await API.PutAsync(url, customer);
+            }
+            return RedirectToAction("Index", "Customers");
         }
         [HttpPost]
         public ActionResult Save(Customer customer)
@@ -89,7 +97,8 @@ namespace Vidly.Controllers
             customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
             customerInDb.BirthDate = customer.BirthDate;
             customerInDb.MembershipTypeId = customer.MembershipTypeId;
-            return customer ;
+
+            return customerInDb;
         }
        
     }

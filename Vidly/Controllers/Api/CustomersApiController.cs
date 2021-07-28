@@ -27,5 +27,20 @@ namespace Vidly.Controllers.Api
             _context.Customers.Add(customer);
             _context.SaveChanges();
         }
+        [HttpPut]
+        public void EditCustomer(Customer customer)
+        {
+            var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == customer.Id);
+
+            customerInDb.Name = customer.Name;
+            customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+            customerInDb.BirthDate = customer.BirthDate;
+            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+
+            _context.SaveChanges();
+            
+        }
+      
+
     }
 }
