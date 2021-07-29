@@ -21,7 +21,7 @@ namespace Vidly.Controllers
         {
             _context.Dispose();
         }
-        public ActionResult MovieForm() 
+        public ActionResult MovieForm()
         {
             var Genre = _context.Genres.ToList();
 
@@ -31,15 +31,18 @@ namespace Vidly.Controllers
             };
             return View(viewModel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("MovieForm", ViewMovie(movie));
+            }
             movie.DateAdded = DateTime.Now;
-            if (movie.Id == 0)
-                _context.Movies.Add(movie);
-            else
-                Edit(movie);
+
             _context.SaveChanges();
-            return RedirectToAction("Index" , "Movies");
+            return RedirectToAction("Index", "Movies");
         }
         public ActionResult ViewEdit(int Id)
         {
@@ -48,12 +51,7 @@ namespace Vidly.Controllers
             if (movie == null)
                 return HttpNotFound();
 
-            var viewModel = new NewMovieViewModel
-            {
-                Movie = movie,
-                Genres = _context.Genres.ToList()
-            };
-            return View("MovieForm", viewModel);
+            return View("MovieForm", ViewMovie(movie));
         }
         public ActionResult Index()
         {
@@ -69,16 +67,26 @@ namespace Vidly.Controllers
 
             return View(movie);
         }
-       public Movie Edit (Movie movie)
+        public Movie Edit(Movie movie)
         {
-           var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == movie.Id);
+            var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == movie.Id);
 
             movieInDb.Name = movie.Name;
             movieInDb.ReleaseDate = movie.ReleaseDate;
+            movieInDb.DateAdded = DateTime.Now;
             movieInDb.GenreId = movie.GenreId;
             movieInDb.NumberInStock = movie.NumberInStock;
 
             return movieInDb;
         }
-    }
+        public NewMovieViewModel ViewMovie(Movie movie)
+        {
+            var viewModel = new NewMovieViewModel
+            {
+                Movie = movie,
+                Genres = _context.Genres.ToList()
+            };
+            return viewModel;
+        }
+    }       
 }
