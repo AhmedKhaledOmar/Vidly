@@ -2,14 +2,16 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<h2>Moives</h2>
+<br />
+@Html.ActionLink("New Movie","MovieForm", null , new { @class = "btn btn-primary"})
 @if (!Model.Any())
 {
     <h2>No Moive now</h2>
 }
 else
 {
-    <table class="table table-hover">
+    <table class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Movie</th>
@@ -20,7 +22,7 @@ else
                 @foreach (var movie in Model)
                 {
                    <tr>
-                       <td>@Html.ActionLink(movie.Name, "Details" , new  { movie.Id })</td>
+                       <td>@Html.ActionLink(movie.Name, "ViewEdit" , new  { movie.Id })</td>
                        <td>@movie.Genre.Name</td>
                    </tr>
                 }        

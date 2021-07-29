@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
+<h2>Customers</h2>
+<br />
+@Html.ActionLink("New Customer","CustomerForm" , null , new { @class = "btn btn-primary" })
 
 @if (!Model.Any())
 {
@@ -9,7 +12,7 @@
 }
 else
 {
-    <table class="table  table-bordered " style="width: 100%;">
+    <table class="table table-bordered table-hover " style="width: 100%;">
         <thead>
             <tr>
                 <th scope="col">
