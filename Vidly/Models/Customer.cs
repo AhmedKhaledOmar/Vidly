@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using VidlyRevision.Models;
 
 namespace Vidly.Models
 {
@@ -18,7 +17,6 @@ namespace Vidly.Models
         [Display(Name = "Membership Type")]
         public byte MembershipTypeId { get; set; }
         [Display (Name = "Date of Birth")]
-        [Min18YearsIfAMember]
         public DateTime? BirthDate { get; set; }
     }
 }

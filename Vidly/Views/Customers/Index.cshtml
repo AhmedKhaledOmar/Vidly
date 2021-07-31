@@ -1,42 +1,64 @@
-﻿@model IEnumerable<Vidly.Models.Customer>
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 <h2>Customers</h2>
 <br />
-@Html.ActionLink("New Customer","CustomerForm" , null , new { @class = "btn btn-primary" })
+@Html.ActionLink("New Customer", "CustomerForm", null, new { @class = "btn btn-primary" })
 
-@if (!Model.Any())
-{
-    <h2>No Customer now</h2>
-}
-else
-{
-    <table class="table table-bordered table-hover " style="width: 100%;">
+
+<div class="container">
+    <table id="customers" class="table  table-bordered " style="width: 100%; ">
         <thead>
             <tr>
-                <th scope="col">
-                    Customer
-                </th>
-                <th scope="col">
-                    Membershipt Type
-                </th>
+                <th>Customers</th>
+                <th>MembershipType</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in Model)
-            {
-            <tr class="table-active">
-                <td>
-                    @Html.ActionLink(customer.Name, "ViewEdit", new { customer.Id })
-                </td>
-                <td>
-                    @customer.MembershipType.Name
-                </td>
-            </tr>
-            }
-                
-            </tbody>
+        </tbody>
     </table>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#customers").DataTable({
+                ajax: {
+                    url: "/api/customersapi",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/viewEdit/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "membershipType.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-customer-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
 
+            $("#customers").on("click", ".js-delete", function () {
+                var button = $(this);
+                if (confirm("Are you sure you want to delete this customer?")) {
+                    $.ajax({
+                        url: "/api/customersapi/" + button.attr("data-customer-id"),
+                        method: "DELETE",
+                        success: function () {
+                            table.row(button.parents("tr")).remove().draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }

@@ -37,13 +37,14 @@ namespace Vidly.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("MovieForm", ViewMovie(movie));
+                return View("MovieForm", GetMovieViewModel(movie));
             }
             movie.DateAdded = DateTime.Now;
 
             _context.SaveChanges();
             return RedirectToAction("Index", "Movies");
         }
+        
         public ActionResult ViewEdit(int Id)
         {
             var movie = _context.Movies.SingleOrDefault(c => c.Id == Id);
@@ -51,7 +52,7 @@ namespace Vidly.Controllers
             if (movie == null)
                 return HttpNotFound();
 
-            return View("MovieForm", ViewMovie(movie));
+            return View("MovieForm", GetMovieViewModel(movie));
         }
         public ActionResult Index()
         {
@@ -79,7 +80,7 @@ namespace Vidly.Controllers
 
             return movieInDb;
         }
-        public NewMovieViewModel ViewMovie(Movie movie)
+        private NewMovieViewModel GetMovieViewModel(Movie movie)
         {
             var viewModel = new NewMovieViewModel
             {
