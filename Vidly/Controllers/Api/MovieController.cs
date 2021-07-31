@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Vidly.Models;
+using System.Data.Entity;
 
 namespace Vidly.Controllers.Api
 {
@@ -18,7 +19,7 @@ namespace Vidly.Controllers.Api
         //Get/api/Movie
         public IEnumerable<Movie> GetMovies()
         {
-            return _context.Movies.ToList();   
+            return _context.Movies.Include(c => c.Genre).ToList();   
         }
         //Delete/api/Movie/{Id}
         [HttpDelete]
