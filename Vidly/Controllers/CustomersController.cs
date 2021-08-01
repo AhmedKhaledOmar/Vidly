@@ -74,6 +74,7 @@ namespace Vidly.Controllers
 
             return View("CustomerForm", viewModel);
         }
+       
         public ActionResult Index()
         {
             var customers = _context.Customers
